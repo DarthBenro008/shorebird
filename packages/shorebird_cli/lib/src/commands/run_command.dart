@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:shorebird_cli/src/command.dart';
 import 'package:shorebird_cli/src/logger.dart';
@@ -73,6 +74,13 @@ class RunCommand extends ShorebirdCommand
       logger.err(utf8.decode(event));
     });
 
+    stdin
+        .transform(utf8.decoder)
+        .transform(const LineSplitter())
+        .listen((event) {
+      flutter.stdin.write(event);
+    });
+    
     return flutter.exitCode;
   }
 }
